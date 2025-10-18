@@ -1,0 +1,26 @@
+{
+    "1": {
+        "full_name": "Damiano David Ju",
+        "age": 26,
+        "email": "damiano12@mail.ru",
+        "status": "INTERVIEWED"
+    },
+    "2": {
+        "full_name": "Victoria Piano Caresse",
+        "age": 24,
+        "email": "victo23@mail.com",
+        "status": "NEW"
+    },
+    "3": {
+        "full_name": "Tom Holland",
+        "age": 26,
+        "email": "tom@gamil.com",
+        "status": "REJECTED"
+    },
+    "5": {
+        "full_name": "Jonny Depp Jn",
+        "age": 59,
+        "email": "jonnyD@gmail.com",
+        "status": "INTERVIEWED"
+    }
+}
