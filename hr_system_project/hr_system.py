@@ -1,7 +1,9 @@
 from time import sleep
 from typing import Dict
-from repository import CandidateRepository
-from validator import CandidateValidator
+
+from hr_system_project.logger import logger
+from hr_system_project.repository import CandidateRepository
+from hr_system_project.validator import CandidateValidator
 
 
 class HRSystem:
@@ -40,6 +42,7 @@ class HRSystem:
                     print("Несуществующая опция")
                     sleep(1)
             except ValueError as e:
+                logger.error(str(e), exc_info=True)
                 print(e)
                 sleep(1)
 
@@ -74,8 +77,7 @@ class HRSystem:
             self.repository.delete_by_full_name(data)
 
     def upload_from_file(self):
-        self.candidates = self.repository.load_from_file() if isinstance(self.repository.load_from_file(),
-                                                                         Dict) else dict()
+        self.candidates = self.repository.load_from_file()
         if len(self.candidates) == 0:
             print("Список пуст")
             return

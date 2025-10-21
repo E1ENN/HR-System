@@ -1,9 +1,9 @@
 from time import sleep
 from typing import Dict, List
-from validator import CandidateValidator
+from hr_system_project.validator import CandidateValidator
 import json
 
-DB_FILE_NAME = "database.json"
+DB_FILE_NAME = "hr_system_project/database.json"
 
 
 class Candidate:
@@ -33,7 +33,7 @@ class Candidate:
 class CandidateRepository:
 
     def __init__(self):
-        self.candidates = self.load_from_file() if isinstance(self.load_from_file(), Dict) else dict()
+        self.candidates = self.load_from_file()
         self.count = 0
 
     def add_candidate(self, full_name: str, age: int, email: str, status: str) -> 'Candidate':
@@ -80,12 +80,12 @@ class CandidateRepository:
             age = int(candidate.age)
         elif not age.isdigit():
             raise ValueError("Возраст должен быть числом")
-        CandidateValidator.validate_age(age)
+        CandidateValidator.validate_age(int(age))
         email = email if email != "" else candidate.email
         CandidateValidator.validate_email(email)
         status = status if status != "" else candidate.status
         CandidateValidator.validate_status(status)
-        candidate.full_name, candidate.age, candidate.email, candidate.status = full_name, age, email, status
+        candidate.full_name, candidate.age, candidate.email, candidate.status = full_name, int(age), email, status
         return candidate
 
     def delete_by_id(self, cid) -> 'Candidate':
@@ -112,6 +112,7 @@ class CandidateRepository:
             data = {cid: candidate.to_dict() for cid, candidate in self.candidates.items()}
             json.dump(data, file, ensure_ascii=False, indent=4)
             print(f"Сохранено изменений {self.count}")
+            self.count = 0
             sleep(1)
             return data
 
@@ -121,8 +122,5 @@ class CandidateRepository:
                 candidates = {int(cid): Candidate.from_dict(candidate) for cid, candidate in json.load(file).items()}
                 self.candidates = candidates
                 return candidates
-        except FileNotFoundError:
-            print("Файл не найден")
-        except (json.JSONDecodeError, ValueError):
-            print("Ошибка чтения файла")
+        except (FileNotFoundError, json.JSONDecodeError, ValueError):
             return dict()

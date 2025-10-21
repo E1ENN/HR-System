@@ -6,21 +6,15 @@
         "status": "INTERVIEWED"
     },
     "2": {
-        "full_name": "Victoria Piano Caresse",
+        "full_name": "Victoria Pieno Casse",
         "age": 24,
         "email": "victo23@mail.com",
         "status": "NEW"
     },
     "3": {
-        "full_name": "Tom Holland",
+        "full_name": "Tom Homy",
         "age": 26,
         "email": "tom@gamil.com",
         "status": "REJECTED"
-    },
-    "5": {
-        "full_name": "Jonny Depp Jn",
-        "age": 59,
-        "email": "jonnyD@gmail.com",
-        "status": "INTERVIEWED"
     }
 }
