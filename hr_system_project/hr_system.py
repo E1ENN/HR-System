@@ -1,5 +1,4 @@
 from time import sleep
-from typing import Dict
 
 from hr_system_project.logger import logger
 from hr_system_project.repository import CandidateRepository
