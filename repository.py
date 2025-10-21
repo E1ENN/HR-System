@@ -1,5 +1,5 @@
 from time import sleep
-from typing import Dict
+from typing import Dict, List
 from validator import CandidateValidator
 import json
 
@@ -36,12 +36,12 @@ class CandidateRepository:
         self.candidates = self.load_from_file() if isinstance(self.load_from_file(), Dict) else dict()
         self.count = 0
 
-    def add_candidate(self, full_name: str, age: int, email: str, status: str) -> str:
+    def add_candidate(self, full_name: str, age: int, email: str, status: str) -> 'Candidate':
         candidate = Candidate(full_name, age, email, status)
         self.candidates[len(self.candidates) + 1] = candidate
-        return full_name
+        return candidate
 
-    def find_by_name(self, name):
+    def find_by_name(self, name) -> List[str]:
         lst_candidates = list()
         for id, candidate in self.candidates.items():
             if name in candidate.full_name:
@@ -49,27 +49,30 @@ class CandidateRepository:
         for el in lst_candidates:
             print(el)
         print(f"Найдено {len(lst_candidates)} записей")
+        return lst_candidates
 
-    def find_by_id(self, cid) -> None:
+
+    def find_by_id(self, cid) -> 'Candidate':
         for id, candidate in self.candidates.items():
             if cid == id:
                 print(f"[ID: {id} | {candidate}]")
-                return
+                return candidate
         print("Запись не найдена")
 
-    def filter_by_status(self, status):
+    def filter_by_status(self, status) -> List[str] | None:
         CandidateValidator.validate_status(status)
         lst_statuses = list()
         for id, candidate in self.candidates.items():
             if candidate.status == status:
-                lst_statuses.append(f"ID: {id} | {candidate}")
+                lst_statuses.append(f"[ID: {id} | {candidate}]")
         if len(lst_statuses) == 0:
             print(f"Нет записей со статусом {status}")
             return
         for el in lst_statuses:
             print(el)
+        return lst_statuses
 
-    def update_candidate(self, full_name, age, email, status, candidate) -> str:
+    def update_candidate(self, full_name, age, email, status, candidate: 'Candidate') -> 'Candidate':
         if full_name == "" and age == "" and email == "" and status == "": raise ValueError("Нет изменений")
         full_name = full_name if full_name != "" else candidate.full_name
         CandidateValidator.validate_name(full_name)
@@ -85,13 +88,15 @@ class CandidateRepository:
         candidate.full_name, candidate.age, candidate.email, candidate.status = full_name, age, email, status
         return candidate
 
-    def delete_by_id(self, cid):
+    def delete_by_id(self, cid) -> 'Candidate':
         if cid not in self.candidates: raise ValueError("Кандидат не найден")
+        candidate = self.candidates[cid]
         del self.candidates[cid]
         print("Запись удалена")
         sleep(1)
+        return candidate
 
-    def delete_by_full_name(self, full_name):
+    def delete_by_full_name(self, full_name) -> None:
         deleted_id = None
         for id, candidate in self.candidates.items():
             if full_name == candidate.full_name:
@@ -102,17 +107,20 @@ class CandidateRepository:
         print("Запись удалена")
         sleep(1)
 
-    def save_to_file(self) -> None:
+    def save_to_file(self) -> Dict:
         with open(DB_FILE_NAME, "w", encoding="utf-8") as file:
             data = {cid: candidate.to_dict() for cid, candidate in self.candidates.items()}
             json.dump(data, file, ensure_ascii=False, indent=4)
-        print(f"Сохранено изменений {self.count}")
-        sleep(1)
+            print(f"Сохранено изменений {self.count}")
+            sleep(1)
+            return data
 
     def load_from_file(self) -> Dict:
         try:
             with open(DB_FILE_NAME, "r", encoding="utf-8") as file:
-                return {int(cid): Candidate.from_dict(candidate) for cid, candidate in json.load(file).items()}
+                candidates = {int(cid): Candidate.from_dict(candidate) for cid, candidate in json.load(file).items()}
+                self.candidates = candidates
+                return candidates
         except FileNotFoundError:
             print("Файл не найден")
         except (json.JSONDecodeError, ValueError):

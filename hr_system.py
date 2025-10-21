@@ -113,7 +113,7 @@ class HRSystem:
         id = int(inp)
         if id not in self.repository.candidates: raise ValueError("Кандидат не найден")
         candidate = self.repository.candidates[id]
-        print(f"Изменяемый объект: {candidate}")
+        print(f"Изменяемая запись: {candidate}")
         full_name = " ".join(part.capitalize() for part in input("Новое ФИО (ENTER чтобы пропустить) >> ").split())
         age_input = input("Новый возраст (ENTER чтобы пропустить) >> ")
         email = input("Новый Email (ENTER чтобы пропустить) >> ")
@@ -146,6 +146,6 @@ class HRSystem:
         status = inp.upper()
         CandidateValidator.validate_status(status)
         candidate = self.repository.add_candidate(full_name, age, email, status)
-        print(f"{candidate} добавлен")
+        print(f"{candidate.full_name} добавлен")
         self.repository.count += 1
         sleep(1)
