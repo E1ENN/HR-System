@@ -85,7 +85,7 @@ class CandidateRepository:
         CandidateValidator.validate_email(email)
         status = status if status != "" else candidate.status
         CandidateValidator.validate_status(status)
-        candidate.full_name, candidate.age, candidate.email, candidate.status = full_name, int(age), email, status
+        candidate.full_name, candidate.age, candidate.email, candidate.status = full_name, int(age), email, status.upper()
         return candidate
 
     def delete_by_id(self, cid) -> 'Candidate':
