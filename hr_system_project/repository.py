@@ -41,7 +41,7 @@ class CandidateRepository:
         self.candidates[len(self.candidates) + 1] = candidate
         return candidate
 
-    def find_by_name(self, name) -> List[str]:
+    def find_by_name(self, name: str) -> List[str]:
         lst_candidates = list()
         for id, candidate in self.candidates.items():
             if name in candidate.full_name:
@@ -52,14 +52,14 @@ class CandidateRepository:
         return lst_candidates
 
 
-    def find_by_id(self, cid) -> 'Candidate':
+    def find_by_id(self, cid: int) -> 'Candidate':
         for id, candidate in self.candidates.items():
             if cid == id:
                 print(f"[ID: {id} | {candidate}]")
                 return candidate
         print("Запись не найдена")
 
-    def filter_by_status(self, status) -> List[str] | None:
+    def filter_by_status(self, status: str) -> List[str] | None:
         CandidateValidator.validate_status(status)
         lst_statuses = list()
         for id, candidate in self.candidates.items():
@@ -72,7 +72,7 @@ class CandidateRepository:
             print(el)
         return lst_statuses
 
-    def update_candidate(self, full_name, age, email, status, candidate: 'Candidate') -> 'Candidate':
+    def update_candidate(self, full_name: str, age: str, email: str, status: str, candidate: 'Candidate') -> 'Candidate':
         if full_name == "" and age == "" and email == "" and status == "": raise ValueError("Нет изменений")
         full_name = full_name if full_name != "" else candidate.full_name
         CandidateValidator.validate_name(full_name)
@@ -88,7 +88,7 @@ class CandidateRepository:
         candidate.full_name, candidate.age, candidate.email, candidate.status = full_name, int(age), email, status.upper()
         return candidate
 
-    def delete_by_id(self, cid) -> 'Candidate':
+    def delete_by_id(self, cid: int) -> 'Candidate':
         if cid not in self.candidates: raise ValueError("Кандидат не найден")
         candidate = self.candidates[cid]
         del self.candidates[cid]
@@ -96,7 +96,7 @@ class CandidateRepository:
         sleep(1)
         return candidate
 
-    def delete_by_full_name(self, full_name) -> None:
+    def delete_by_full_name(self, full_name: str) -> None:
         deleted_id = None
         for id, candidate in self.candidates.items():
             if full_name == candidate.full_name:

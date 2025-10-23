@@ -11,6 +11,7 @@ class HRSystem:
         self.repository = CandidateRepository()
 
     def system_run(self) -> None:
+        print("─────────────────────────────────────\n🎯 HR-СИСТЕМА: Управление кандидатами\n─────────────────────────────────────")
         while True:
             self.menu()
             option = input("Выберите опцию >> ")
@@ -69,7 +70,7 @@ class HRSystem:
         self.__delete_candidate(input("Удаление по (id/ФИО) >> "))
         self.repository.count += 1
 
-    def __delete_candidate(self, data):
+    def __delete_candidate(self, data: str):
         if data.isdigit():
             self.repository.delete_by_id(int(data))
         elif isinstance(data, str):
@@ -100,7 +101,7 @@ class HRSystem:
         self.__find_candidate(input("Поиск (ID/ФИО) >> "))
         self.__exit()
 
-    def __find_candidate(self, data):
+    def __find_candidate(self, data: str):
         if data.isdigit():
             self.repository.find_by_id(int(data))
         elif isinstance(data, str):
