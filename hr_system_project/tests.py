@@ -6,7 +6,7 @@ class TestCandidateRepository(unittest.TestCase):
     def setUp(self):
         self.repository = CandidateRepository()
         self.repository.candidates = dict()
-        self.candidate = Candidate("Иван Иванов", 30, "ivan123@mail.com", "NEW")
+
 
     def test_add_candidate(self):
         candidate = self.repository.add_candidate("Иван Иванов", 30, "ivan123@mail.com", "NEW")
