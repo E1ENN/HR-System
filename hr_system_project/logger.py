@@ -6,5 +6,4 @@ logging.basicConfig(
     format='%(asctime)s - %(funcName)s - %(levelname)s - %(message)s',
     encoding='utf-8'
 )
-
 logger = logging.getLogger()
