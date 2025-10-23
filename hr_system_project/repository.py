@@ -26,7 +26,7 @@ class Candidate:
         }
 
     @staticmethod
-    def from_dict(data):
+    def from_dict(data: Dict):
         return Candidate(data["full_name"], data["age"], data["email"], data["status"])
 
 
@@ -42,15 +42,12 @@ class CandidateRepository:
         return candidate
 
     def find_by_name(self, name: str) -> List[str]:
-        lst_candidates = list()
-        for id, candidate in self.candidates.items():
-            if name in candidate.full_name:
-                lst_candidates.append(f"[ID: {id} | {candidate}]")
+        lst_candidates = [f"[ID: {id} | {candidate}]"
+                          for id, candidate in self.candidates.items() if name in candidate.full_name]
         for el in lst_candidates:
             print(el)
         print(f"Найдено {len(lst_candidates)} записей")
         return lst_candidates
-
 
     def find_by_id(self, cid: int) -> 'Candidate':
         for id, candidate in self.candidates.items():
@@ -61,18 +58,14 @@ class CandidateRepository:
 
     def filter_by_status(self, status: str) -> List[str] | None:
         CandidateValidator.validate_status(status)
-        lst_statuses = list()
-        for id, candidate in self.candidates.items():
-            if candidate.status == status:
-                lst_statuses.append(f"[ID: {id} | {candidate}]")
-        if len(lst_statuses) == 0:
-            print(f"Нет записей со статусом {status}")
-            return
-        for el in lst_statuses:
+        lst_candidates = [f"[ID: {id} | {candidate}]" for id, candidate in self.candidates.items() if candidate.status == status]
+        for el in lst_candidates:
             print(el)
-        return lst_statuses
+        print(f"Найдено {len(lst_candidates)} записей")
+        return lst_candidates
 
-    def update_candidate(self, full_name: str, age: str, email: str, status: str, candidate: 'Candidate') -> 'Candidate':
+    def update_candidate(self, full_name: str, age: str, email: str, status: str,
+                         candidate: 'Candidate') -> 'Candidate':
         if full_name == "" and age == "" and email == "" and status == "": raise ValueError("Нет изменений")
         full_name = full_name if full_name != "" else candidate.full_name
         CandidateValidator.validate_name(full_name)
@@ -85,7 +78,8 @@ class CandidateRepository:
         CandidateValidator.validate_email(email)
         status = status if status != "" else candidate.status
         CandidateValidator.validate_status(status)
-        candidate.full_name, candidate.age, candidate.email, candidate.status = full_name, int(age), email, status.upper()
+        candidate.full_name, candidate.age, candidate.email, candidate.status = full_name, int(
+            age), email, status.upper()
         return candidate
 
     def delete_by_id(self, cid: int) -> 'Candidate':
